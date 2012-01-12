@@ -2,7 +2,7 @@
 /**
  * Services_Linode
  *
- * PHP Version 5 asdasdasdasdasdsa
+ * PHP Version 5
  *
  * Copyright (c) 2010, Kerem Durmus
  * All rights reserved.
