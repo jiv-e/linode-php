@@ -11,7 +11,9 @@
         <param name="DistributionVendor" type="string" required="false" />
         <param name="keywords" type="string" required="false" /> 
     </method>
-    
+    <method name="api.spec"></method>
+    <method name="account.info"></method>
+
     <!-- Domain -->
     <method name="domain.update">
         <param name="DomainID" type="integer" required="true" />
@@ -260,6 +262,90 @@
         <param name="JobID" type="integer" required="false" />
         <param name="pendingOnly" type="boolean" required="false" />        
     </method>    
+
     <!-- NodeBalancer -->
+    <method name="nodebalancer.create">
+        <param name="DatacenterID" type="integer" required="true" />
+        <param name="PaymentTerm" type="integer" required="true" />       
+    </method>  
+
+    <method name="nodebalancer.delete">
+        <param name="NodeBalancerID" type="integer" required="true" />    
+    </method>  
+
+    <method name="nodebalancer.list">
+        <param name="NodeBalancerID" type="integer" required="false" />       
+    </method>  
+
+    <method name="nodebalancer.update">
+        <param name="NodeBalancerID" type="integer" required="true" />
+        <param name="Label" type="string" required="false" />
+        <param name="ClientConnThrottle" type="integer" required="false" />        
+    </method>              
+
+     <!-- NodeBalancer.Config -->
+    <method name="nodebalancer.config.create">
+        <param name="NodeBalancerID" type="integer" required="true" />
+        <param name="Port" type="integer" required="false" />
+        <param name="Protocol" type="string" required="false" />
+        <param name="Algorithm" type="string" required="false" />
+        <param name="Stickiness" type="string" required="false" />
+        <param name="check" type="string" required="false" />
+        <param name="check_interval" type="integer" required="false" />
+        <param name="check_timeout" type="string" required="false" />
+        <param name="check_attempts" type="string" required="false" />
+        <param name="check_path" type="string" required="false" />
+        <param name="check_body" type="string" required="false" />       
+    </method>       
+
+    <method name="nodebalancer.config.delete"> 
+        <param name="ConfigID" type="integer" required="true" />  
+    </method>    
+
+    <method name="nodebalancer.config.list">
+        <param name="NodeBalancerID" type="integer" required="true" />
+        <param name="ConfigID" type="integer" required="false" />    
+    </method>          
+
+    <method name="nodebalancer.update">
+        <param name="NodeBalancerID" type="integer" required="true" />
+        <param name="Port" type="integer" required="false" />
+        <param name="Protocol" type="string" required="false" />
+        <param name="Algorithm" type="string" required="false" />
+        <param name="Stickiness" type="string" required="false" />
+        <param name="check" type="string" required="false" />
+        <param name="check_interval" type="integer" required="false" />
+        <param name="check_timeout" type="string" required="false" />
+        <param name="check_attempts" type="string" required="false" />
+        <param name="check_path" type="string" required="false" />
+        <param name="check_body" type="string" required="false" />     
+    </method>       
+
+    <!-- NodeBalancer.Node -->
+    <method name="nodebalancer.node.create">
+        <param name="ConfigID" type="integer" required="true" />
+        <param name="Label" type="string" required="true" />
+        <param name="Address" type="string" required="true" />
+        <param name="Weight" type="integer" required="false" />
+        <param name="Mode" type="integer" required="false" />   
+    </method>  
+
+    <method name="nodebalancer.node.delete">
+        <param name="NodeID" type="integer" required="true" />   
+    </method>  
+
+    <method name="nodebalancer.node.list">
+        <param name="ConfigID" type="integer" required="true" />
+        <param name="NodeID" type="integer" required="false" />    
+    </method>  
+
+    <method name="nodebalancer.node.update">
+        <param name="ConfigID" type="integer" required="true" />
+        <param name="Label" type="string" required="true" />
+        <param name="Address" type="string" required="true" />
+        <param name="Weight" type="integer" required="false" />
+        <param name="Mode" type="integer" required="false" />   
+    </method>               
+
     <!-- Beta -->
 </linode>
