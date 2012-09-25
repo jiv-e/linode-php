@@ -40,4 +40,4 @@
     }
     ?>
 
-For more information about api methods visit <http://www.linode.com/api/autodoc.cfm>
+For more information about api methods visit <http://www.linode.com/api>
