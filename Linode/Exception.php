@@ -40,7 +40,6 @@
  * @link     http://www.linode.com/api/autodoc.cfm
  */
  
-require_once 'PEAR/Exception.php';
 
 /**
  * Services_Linode_Exception
@@ -53,4 +52,4 @@ require_once 'PEAR/Exception.php';
  * @link     http://github.com/krmdrms/linode/
  * @link     http://www.linode.com/api/autodoc.cfm
  */
-class Services_Linode_Exception extends PEAR_Exception {}
+class Services_Linode_Exception extends Exception {}

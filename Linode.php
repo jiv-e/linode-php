@@ -40,8 +40,7 @@
  * @link     http://www.linode.com/api/autodoc.cfm
  */
 
-require_once 'HTTP/Request2.php'; 
-require_once 'Services/Linode/Exception.php';
+require_once 'Linode/Exception.php';
 
 /**
  * Services_Linode
@@ -57,25 +56,27 @@ require_once 'Services/Linode/Exception.php';
 class Services_Linode
 {
     /**
-     * Request Url
-     *
-     * @var string $apiUrl
-     */
-    private static $apiUrl = 'https://api.linode.com/';
-    
-    /**
-     * Default HTTP_Request2 config parameters
+     * Default cURL options
      *
      * @var array
      */     
-    private $httpConfig = array('ssl_verify_peer' => false);
+    public $curlOptions = array
+    (
+        CURLOPT_URL => 'https://api.linode.com/',
+        CURLOPT_USERAGENT => 'Linode PHP/1.0.5',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_IPRESOLVE => CURLOPT_IPRESOLVE_V4,
+    );
+
     
     /**
-     * Instance of {@link HTTP_Request2}
+     * cURL Handle
      *
-     * @var object $request
+     * @var cURL Handle
      */     
-    protected $request;    
+    protected $curlHandle = null;    
     
     /**
      * API mapping. Constructed by api.xml
@@ -134,6 +135,14 @@ class Services_Linode
         $this->apiKey = $apiKey;
         $this->batching = $batching;
         $this->loadAPI();
+    }
+
+    public function __destruct()
+    {
+        if ($this->curlHandle !== null)
+        {
+            curl_close($this->curlHandle);          
+        }
     }
     
     /**
@@ -211,24 +220,6 @@ class Services_Linode
     }
      
     /**
-     *  Returns the HTTP_Request2 instance.
-     *
-     * @return object
-     */
-    protected function httpRequest()
-    {
-        if ($this->request === null) {
-            $this->request = new HTTP_Request2();
-            $this->request->setConfig($this->httpConfig);    
-            $this->request->setMethod(HTTP_Request2::METHOD_POST);
-            $this->request->setUrl(self::$apiUrl);            
-            $this->request->setHeader(array('User-Agent' => 'Linode PHP/@package_version@'));
-        }
-        
-        return $this->request;
-    }
-    
-    /**
      * Send request to api
      *
      * @var $method
@@ -247,16 +238,30 @@ class Services_Linode
                    $this->setParam($param,$value);
             } 
         }
-             
-        try {
-            $request = clone $this->httpRequest();
-            $request->addPostParameter($this->requestArray);
-            $response = $request->send();
-        } catch(HTTP_Request2_Exception $e) {
-            throw new Services_Linode_Exception($e->getMessage());
+
+        // Initialize cURL
+        if (!($this->curlHandle = curl_init())) {
+            throw new Services_Linode_Exception('Could not initialize cURL handle.');
         }
+
+        if (!curl_setopt_array($this->curlHandle, $this->curlOptions)) {
+            throw new Services_Linode_Exception('Could not set cURL options.');
+        }
+
+        // Disable request expect header because it's a slow down 
+        // http://curl.haxx.se/mail/archive-2005-06/0074.html
+        curl_setopt($this->curlHandle, CURLOPT_HTTPHEADER, array('Expect:'));
         
-        return $response->getBody();
+        // Set POST fields & send HTTP request
+        if (!curl_setopt($this->curlHandle, CURLOPT_POSTFIELDS, $this->requestArray)) {
+            throw new Services_Linode_Exception('Could not set cURL option POSTFIELDS.');
+        }
+
+        if (!($response = curl_exec($this->curlHandle))) {
+            throw new Services_Linode_Exception(curl_error($this->curlHandle), curl_errno($this->curlHandle));
+        }
+
+        return $response;
     }
     
     /**
@@ -365,8 +370,7 @@ class Services_Linode
      */
     protected function loadAPI()
     {
-        $filePath = '@data_dir@'.'/Services_Linode/';
-        $xmlApi = simplexml_load_file($filePath.'api.xml');
+        $xmlApi = simplexml_load_file(dirname(__FILE__).'/api.xml');
         foreach ($xmlApi->method as $method) {
             $method_name = (string) $method['name'];
             $this->api[$method_name] =  $method;
