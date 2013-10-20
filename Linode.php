@@ -67,7 +67,7 @@ class Services_Linode
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST => true,
         CURLOPT_SSL_VERIFYPEER => true,
-        CURLOPT_IPRESOLVE => CURLOPT_IPRESOLVE_V4,
+        CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
     );
    
     /**
@@ -134,6 +134,15 @@ class Services_Linode
         $this->apiKey = $apiKey;
         $this->batching = $batching;
         $this->loadAPI();
+
+        // Initialize cURL
+        if (!($this->curlHandle = curl_init())) {
+            throw new Services_Linode_Exception('Could not initialize cURL handle.');
+        }
+
+        if (!curl_setopt_array($this->curlHandle, $this->curlOptions)) {
+            throw new Services_Linode_Exception('Could not set cURL options.');
+        }
     }
 
     public function __destruct()
@@ -193,7 +202,11 @@ class Services_Linode
      */
     public function setCurlOptions($options = array())
     {
-        $this->curlOptions = array_merge($this->curlOptions, $options);
+        foreach ($options as $key => $value) {
+            if (!curl_setopt($this->curlHandle, $key, $value)) {
+                throw new Services_Linode_Exception('Could not set cURL option '.$key.'.');
+            }
+        }
     }
      
     /**
@@ -247,15 +260,6 @@ class Services_Linode
             foreach($params as $param => $value) {
                    $this->setParam($param,$value);
             } 
-        }
-
-        // Initialize cURL
-        if (!($this->curlHandle = curl_init())) {
-            throw new Services_Linode_Exception('Could not initialize cURL handle.');
-        }
-
-        if (!curl_setopt_array($this->curlHandle, $this->curlOptions)) {
-            throw new Services_Linode_Exception('Could not set cURL options.');
         }
 
         // Disable request expect header because it's a slow down 
