@@ -59,8 +59,8 @@ class Services_Linode
      * Default cURL options
      *
      * @var array
-     */     
-    public $curlOptions = array
+     */
+    protected $curlOptions = array
     (
         CURLOPT_URL => 'https://api.linode.com/',
         CURLOPT_USERAGENT => 'Linode PHP/1.0.5',
@@ -69,14 +69,13 @@ class Services_Linode
         CURLOPT_SSL_VERIFYPEER => true,
         CURLOPT_IPRESOLVE => CURLOPT_IPRESOLVE_V4,
     );
-
-    
+   
     /**
      * cURL Handle
      *
      * @var cURL Handle
-     */     
-    protected $curlHandle = null;    
+     */
+    protected $curlHandle = null;
     
     /**
      * API mapping. Constructed by api.xml
@@ -187,6 +186,17 @@ class Services_Linode
     }    
     
     /**
+     * Set cURL options
+     *
+     * @var array $options
+     * @return void
+     */
+    public function setCurlOptions($options = array())
+    {
+        $this->curlOptions = array_merge($this->curlOptions, $options);
+    }
+     
+    /**
      * Cache api requests when batching enabled
      *
      * @var array $params
@@ -218,7 +228,7 @@ class Services_Linode
     {
        return $this->requestArray;
     }
-     
+
     /**
      * Send request to api
      *
