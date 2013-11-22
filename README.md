@@ -1,3 +1,10 @@
+### Credits
+
+This has been forked from the original to be PSR-0 compatable, and added to packagist for easy download.
+
+- Original: https://github.com/krmdrms/linode
+- Convert to cURL: https://github.com/SenH/linode
+
 # Installation (Composer)
 
     {
