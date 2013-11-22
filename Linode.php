@@ -40,7 +40,7 @@
  * @link     http://www.linode.com/api/autodoc.cfm
  */
 
-require_once 'Linode/Exception.php';
+namespace Linode;
 
 /**
  * Services_Linode
@@ -53,7 +53,7 @@ require_once 'Linode/Exception.php';
  * @link     http://github.com/krmdrms/linode/
  * @link     http://www.linode.com/api/autodoc.cfm
  */
-class Services_Linode
+class LinodeApi
 {
     /**
      * Default cURL options
