@@ -40,6 +40,7 @@
  * @link     http://www.linode.com/api/autodoc.cfm
  */
  
+namespace Linode\Exception;
 
 /**
  * Services_Linode_Exception
@@ -52,4 +53,4 @@
  * @link     http://github.com/krmdrms/linode/
  * @link     http://www.linode.com/api/autodoc.cfm
  */
-class Services_Linode_Exception extends Exception {}
+class Exception extends \Exception {}
