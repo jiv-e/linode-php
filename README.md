@@ -1,7 +1,9 @@
 # Installation (Composer)
 
     {
-        "require": "isometriks/linode-php"
+        "require": {
+            "isometriks/linode-php": "dev-master"
+        }
     }
     
 ## Usage
@@ -23,7 +25,7 @@ try {
 
 #### To perform a batch request
 
-```
+```php
 <?php
     
 try {
