@@ -3,6 +3,6 @@
     "description": "Linode PHP Bindings",
     "autoload": {
         "psr-0": { "Linode": "" }
-    }
+    },
     "target-dir": "Linode"
 }
