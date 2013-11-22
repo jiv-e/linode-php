@@ -129,7 +129,7 @@ class Api
     public function __construct($apiKey = null, $batching = false)
     {
         if(!isset($apiKey)) {
-            throw new Services_Linode_Exception('You must set your api key');
+            throw new Exception('You must set your api key');
         }
         $this->apiKey = $apiKey;
         $this->batching = $batching;
@@ -137,11 +137,11 @@ class Api
 
         // Initialize cURL
         if (!($this->curlHandle = curl_init())) {
-            throw new Services_Linode_Exception('Could not initialize cURL handle.');
+            throw new Exception('Could not initialize cURL handle.');
         }
 
         if (!curl_setopt_array($this->curlHandle, $this->curlOptions)) {
-            throw new Services_Linode_Exception('Could not set cURL options.');
+            throw new Exception('Could not set cURL options.');
         }
     }
 
@@ -177,7 +177,7 @@ class Api
             }
             
         } else {      
-            throw new Services_Linode_Exception('Unknown method: '.$method);
+            throw new Exception('Unknown method: '.$method);
         }
     }
     
@@ -204,7 +204,7 @@ class Api
     {
         foreach ($options as $key => $value) {
             if (!curl_setopt($this->curlHandle, $key, $value)) {
-                throw new Services_Linode_Exception('Could not set cURL option '.$key.'.');
+                throw new Exception('Could not set cURL option '.$key.'.');
             }
         }
     }
@@ -268,11 +268,11 @@ class Api
         
         // Set POST fields & send HTTP request
         if (!curl_setopt($this->curlHandle, CURLOPT_POSTFIELDS, $this->requestArray)) {
-            throw new Services_Linode_Exception('Could not set cURL option POSTFIELDS.');
+            throw new Exception('Could not set cURL option POSTFIELDS.');
         }
 
         if (!($response = curl_exec($this->curlHandle))) {
-            throw new Services_Linode_Exception(curl_error($this->curlHandle), curl_errno($this->curlHandle));
+            throw new Exception(curl_error($this->curlHandle), curl_errno($this->curlHandle));
         }
 
         return $response;
@@ -310,7 +310,7 @@ class Api
         $params = array();
     
         if ($count_args && (!isset($args[0]) || is_array($args[0]) && $count_args > count($args[0]))) {
-            throw new Services_Linode_Exception(
+            throw new Exception(
                 'Not enough arguments for '.$path
             );
         }
@@ -333,7 +333,7 @@ class Api
              
             try {
                 $this->validateArg($name, $arg , $type); 
-            } catch (Services_Linode_Exception $e) {
+            } catch (Exception $e) {
                 echo $e->getMessage();
             }
             
@@ -373,7 +373,7 @@ class Api
         }
         
         if ($msg !== null) {
-            throw new Services_Linode_Exception($msg);
+            throw new Exception($msg);
         }
     }    
     
