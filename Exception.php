@@ -40,7 +40,7 @@
  * @link     http://www.linode.com/api/autodoc.cfm
  */
  
-namespace Linode\Exception;
+namespace Linode;
 
 /**
  * Services_Linode_Exception
