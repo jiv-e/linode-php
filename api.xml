@@ -38,6 +38,7 @@
         <param name="TTL_sec" type="integer" required="false" />
         <param name="status" type="integer" required="false" />
         <param name="master_ips" type="string" required="false" />     
+        <param name="lpm_displayGroup" type="string" required="false" />
     </method>
     <method name="domain.list">
         <param name="DomainID" type="integer" required="false" />    
