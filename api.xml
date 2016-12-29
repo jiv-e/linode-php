@@ -244,7 +244,7 @@
     
     <!-- IP -->
     <method name="linode.ip.list">
-        <param name="LinodeID" type="integer" required="true" />
+        <param name="LinodeID" type="integer" required="false" />
         <param name="IpAdressID" type="integer" required="false" />        
     </method>
     <method name="linode.ip.addprivate">
