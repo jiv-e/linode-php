@@ -84,7 +84,7 @@
         <param name="LinodeID" type="integer" required="true" />        
     </method>
     <method name="linode.update">
-        <param name="LinodeID" type="integer" required="false" />
+        <param name="LinodeID" type="integer" required="true" />
         <param name="Label" type="string" required="false" />
         <param name="lpm_displayGroup" type="string" required="false" />
         <param name="Alert_cpu_enabled" type="boolean" required="false" />
